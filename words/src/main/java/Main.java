@@ -10,8 +10,21 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 
 public class Main {
+    private static final String HOST = "192.168.0.20";
+    private static final int PORT = 50000;
+    private static final String DATABASE = "test";
+    private static final String USERNAME = "db2inst1";
+    private static final String PASSWORD = "test";
+
     public static void main(String[] args) throws Exception {
-        Class.forName("org.postgresql.Driver");
+        System.out.println("Detecting DB2 driver...");
+        Class.forName("com.ibm.db2.jcc.DB2Driver");
+        System.out.println("Detecting DB2 driver...[OK]");
+
+        System.out.println("Going to print some random words from DB2");
+        System.out.println("Random noun from DB2: " + randomWord("nouns"));
+        System.out.println("Random verb from DB2: " + randomWord("verbs"));
+        System.out.println("Random adjective from DB2: " + randomWord("adjectives"));
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/noun", handler(Suppliers.memoize(() -> randomWord("nouns"))));
@@ -21,7 +34,7 @@ public class Main {
     }
 
     private static String randomWord(String table) {
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://db:5432/postgres", "postgres", "")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:db2://" + HOST + ":" + String.valueOf(PORT) + "/" + DATABASE, USERNAME, PASSWORD)) {
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet set = statement.executeQuery("SELECT word FROM " + table + " ORDER BY random() LIMIT 1")) {
                     while (set.next()) {

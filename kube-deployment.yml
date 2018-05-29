@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: words
-        image: dockersamples/k8s-wordsmith-api
+        image: skytap/k8s-wordsmith-api
         ports:
         - containerPort: 8080
           name: api
@@ -96,7 +96,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: dockersamples/k8s-wordsmith-web
+        image: skytap/k8s-wordsmith-web
         ports:
         - containerPort: 80
           name: words-web
