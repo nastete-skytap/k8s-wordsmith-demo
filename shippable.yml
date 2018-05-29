@@ -1,0 +1,21 @@
+language: none
+
+branches:
+  only:
+    - master
+
+integrations:
+  hub:
+    - integrationName: skytap_docker_registry
+      type: dockerRegistryLogin
+
+env:
+  global:
+    - DOCKER_REPO=k8s-wordsmith-web
+    - DOCKER_ACC=skytap
+
+build:
+  post_ci:
+    - cd web
+    - docker build -t $DOCKER_ACC/$DOCKER_REPO:$BRANCH.$BUILD_NUMBER .
+    - docker push $DOCKER_ACC/$DOCKER_REPO:$BRANCH.$BUILD_NUMBER
