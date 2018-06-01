@@ -17,5 +17,5 @@ env:
 build:
   post_ci:
     - cd web
-    - docker build -t $DOCKER_ACC/$DOCKER_REPO:$BRANCH.$BUILD_NUMBER .
-    - docker push $DOCKER_ACC/$DOCKER_REPO:$BRANCH.$BUILD_NUMBER
+    - docker build -t $DOCKER_ACC/$DOCKER_REPO .
+    - docker push $DOCKER_ACC/$DOCKER_REPO
